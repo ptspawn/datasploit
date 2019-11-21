@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import sys
-import osint_runner
 import optparse
 
+import osint_runner
 
-def run(email, output = None):
+
+def run(email, output=None):
     osint_runner.run("email", "emails", email, output)
 
 

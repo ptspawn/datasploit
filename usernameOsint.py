@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import sys
-import osint_runner
 import optparse
 
+import osint_runner
 
-def run(username, output = None):
+
+def run(username, output=None):
     osint_runner.run("username", "username", username, output)
 
 

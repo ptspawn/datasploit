@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import sys
-import osint_runner
 import optparse
 
+import osint_runner
 
-def run(domain, output = None):
+
+def run(domain, output=None):
     osint_runner.run("domain", "domain", domain, output)
 
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import sys
-import osint_runner
 import optparse
 
+import osint_runner
 
-def run(ip, output = None):
+
+def run(ip, output=None):
     osint_runner.run("ip", "ip", ip, output)
 
 
