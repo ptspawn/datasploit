@@ -1,4 +1,4 @@
-We need following API keys to run this tool efficiently:
+расшифровка хэшей, сервис расшифровки хэшейWe need following API keys to run this tool efficiently:
 
 shodan_api, censysio_id, censysio_secret, zoomeyeuser, zoomeyepass, clearbit_apikey, emailhunter, fullcontact, google_cse_key, google_cse_cx, github_travis_key.
 
