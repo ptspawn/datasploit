@@ -10,9 +10,11 @@ from termcolor import colored
 # Control whether the module is enabled or not
 ENABLED = True
 
+
 class style:
     BOLD = '\033[1m'
     END = '\033[0m'
+
 
 def banner():
     # Write a cool banner here

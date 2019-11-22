@@ -8,8 +8,8 @@ import warnings
 from termcolor import colored
 import time
 
-ENABLED = True
-
+ENABLED = False
+# site not working
 
 class style:
     BOLD = '\033[1m'
@@ -21,7 +21,8 @@ warnings.filterwarnings("ignore")
 
 def checkpunkspider(reversed_domain):
     time.sleep(0.5)
-    req = requests.post("http://www.punkspider.org/service/search/detail/" + reversed_domain, verify=False)
+    #req = requests.post("http://www.punkspider.org/service/search/detail/" + reversed_domain, verify=False)
+    req = requests.post("https://haxf4rall.com/?s=" + reversed_domain, verify=False)
     try:
         return json.loads(req.content)
     except:

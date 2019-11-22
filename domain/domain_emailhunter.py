@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-import base
-import vault
-import requests
 import json
 import sys
 import time
+
+import requests
 from termcolor import colored
+
+import vault
 
 ENABLED = True
 WRITE_TEXT_FILE = True
@@ -49,20 +50,21 @@ def main(domain):
 
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
-            print colored(
-                style.BOLD + '\n[-] Emailhunter API key not configured, skipping Email Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+        print colored(
+            style.BOLD + '\n[-] Emailhunter API key not configured, skipping Email Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END,
+            'red')
     else:
         for x in data:
             print str(x)
 
 
 def output_text(data):
-	return "\n".join(data)
+    return "\n".join(data)
 
 
 if __name__ == "__main__":
-        domain = sys.argv[1]
-        banner()
-        result = main(domain)
-        if result:
-            output(result, domain)
+    domain = sys.argv[1]
+    banner()
+    result = main(domain)
+    if result:
+        output(result, domain)

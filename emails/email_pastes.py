@@ -72,14 +72,13 @@ def main(email):
 
 
 def output(data, email):
-    if data[0] == False:
+    if not data[0]:
         print colored(
             style.BOLD + '[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
     else:
-        #print data[0]
         print "[+] %s results found\n" % len(data[1])
         for x in data[1]:
-	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
+            title = x['title'].encode('ascii', 'ignore').decode('ascii')
             snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
             link = x['link'].encode('ascii', 'ignore').decode('ascii')
             print "Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet))

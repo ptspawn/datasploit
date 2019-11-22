@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import base
 import sys
+
 import dns.resolver
 from termcolor import colored
 

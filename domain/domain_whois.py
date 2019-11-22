@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-import base
 import sys
+
 import whois
 from termcolor import colored
-import time
 
 ENABLED = True
 
@@ -15,11 +14,11 @@ class style:
 
 
 def whoisnew(domain):
-	try:
-	    w = whois.whois(domain)
-	    return dict(w)
-	except:
-		return {}
+    try:
+        w = whois.whois(domain)
+        return dict(w)
+    except:
+        return {}
 
 
 def banner():

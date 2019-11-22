@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import base
-import vault
 import re
-import requests
 import sys
+
+import requests
 from termcolor import colored
+
+import vault
 
 ENABLED = True
 
@@ -34,7 +35,7 @@ def banner():
 
 def clean_tracking_code(tracking_code):
     if tracking_code.count("-") > 1:
-        return tracking_code.rsplit("-",1)[0]
+        return tracking_code.rsplit("-", 1)[0]
     else:
         return tracking_code
 
@@ -48,11 +49,11 @@ def extract_tracking_codes(domain):
         response = requests.get(site)
     except:
         connections['err'] = str(colored(style.BOLD +
-                                 '\n[!] Failed to reach site.\n' + style.END, 'red'))
+                                         '\n[!] Failed to reach site.\n' + style.END, 'red'))
         return connections
 
     extracted_codes = []
-    google_adsense_pattern   = re.compile("pub-[0-9]{1,}", re.IGNORECASE)
+    google_adsense_pattern = re.compile("pub-[0-9]{1,}", re.IGNORECASE)
     google_analytics_pattern = re.compile("ua-\d+-\d+", re.IGNORECASE)
     extracted_codes.extend(google_adsense_pattern.findall(response.content))
     extracted_codes.extend(google_analytics_pattern.findall(response.content))
@@ -67,7 +68,7 @@ def extract_tracking_codes(domain):
     return connections
 
 
-def spyonweb_request(data,request_type="domain"):
+def spyonweb_request(data, request_type="domain"):
     params = {}
     params['access_token'] = vault.get_key('spyonweb_access_token')
     response = requests.get('https://api.spyonweb.com/v1/' +
@@ -86,7 +87,7 @@ def spyonweb_analytics_codes(connections):
             request_type = "adsense"
         elif code.lower().startswith("ua"):
             request_type = "analytics"
-        results = spyonweb_request(code,request_type)
+        results = spyonweb_request(code, request_type)
         if results:
             # the free tier is limited, account for this.
             if 'message' in results:
@@ -104,7 +105,7 @@ def main(domain):
     if vault.get_key('spyonweb_access_token') != None:
         connections = extract_tracking_codes(domain)
         if 'err' in connections:
-            return [ connections ]
+            return [connections]
         else:
             if len(connections.keys()):
                 common_domains = {}
@@ -113,14 +114,14 @@ def main(domain):
                 dirty_domains = spyonweb_analytics_codes(connections)
                 for k, v in dirty_domains.items():
                     common_domains[k] = (sorted(set(v)))
-                return [ common_domains, tracking_codes ]
+                return [common_domains, tracking_codes]
             else:
-                return [ colored(style.BOLD + '\n[!] No tracking codes found!\n' +
-                                 style.END, 'red') ]
+                return [colored(style.BOLD + '\n[!] No tracking codes found!\n' +
+                                style.END, 'red')]
     else:
-        return [ colored(style.BOLD +
-                         '[!] Error: No SpyOnWeb API token found. Skipping' +
-                         style.END, 'red') ]
+        return [colored(style.BOLD +
+                        '[!] Error: No SpyOnWeb API token found. Skipping' +
+                        style.END, 'red')]
 
 
 def output(data, domain=""):

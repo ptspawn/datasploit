@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-import base
-import vault
-import requests
 import json
 import sys
-from termcolor import colored
 import time
+
+import requests
+from termcolor import colored
+
+import vault
 
 ENABLED = True
 
@@ -19,7 +20,7 @@ class style:
 def shodandomainsearch(domain):
     time.sleep(0.3)
     endpoint = "https://api.shodan.io/shodan/host/search?key=%s&query=hostname:%s&facets={facets}" % (
-    vault.get_key('shodan_api'), domain)
+        vault.get_key('shodan_api'), domain)
     req = requests.get(endpoint)
     return req.content
 
@@ -38,12 +39,13 @@ def main(domain):
 def output(data, domain=""):
     if type(data) == list and data[1] == "INVALID_API":
         print colored(
-                style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+            style.BOLD + '\n[-] Shodan API Key not configured. Skipping Shodan search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END,
+            'red')
     else:
         if 'matches' in data.keys():
             for x in data['matches']:
                 print "IP: %s\nHosts: %s\nDomain: %s\nPort: %s\nData: %s\nLocation: %s\n" % (
-                x['ip_str'], x['hostnames'], x['domains'], x['port'], x['data'].replace("\n", ""), x['location'])
+                    x['ip_str'], x['hostnames'], x['domains'], x['port'], x['data'].replace("\n", ""), x['location'])
         print "-----------------------------\n"
 
 

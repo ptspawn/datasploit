@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-import base
+import re
+import sys
+import time
+
 import requests
 from bs4 import BeautifulSoup
-import sys
-import re
 from termcolor import colored
-import time
 
 ENABLED = True
 

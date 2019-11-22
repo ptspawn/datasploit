@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import base
-import vault
-import sys
 import json
+import sys
+
 import requests
 from termcolor import colored
+
+import vault
 
 ENABLED = True
 
@@ -39,7 +40,8 @@ def output(data, domain=""):
     if type(data) == list and not data[0]:
         if data[1] == "INVALID_API":
             print colored(
-                style.BOLD + '\n[-] Github Access Token not configured, skipping Github Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+                style.BOLD + '\n[-] Github Access Token not configured, skipping Github Search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END,
+                'red')
         else:
             print colored("Sad! Nothing found on github", 'red')
     else:

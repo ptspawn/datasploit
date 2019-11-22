@@ -11,6 +11,7 @@ class style:
     BOLD = '\033[1m'
     END = '\033[0m'
 
+
 def check_api_keys():
     try:
         if vault.get_key('censysio_id') != None and vault.get_key('censysio_secret') != None:
@@ -19,6 +20,7 @@ def check_api_keys():
             return False
     except:
         return False
+
 
 def censys_search(domain):
     censys_list = []
@@ -61,6 +63,8 @@ def censys_search(domain):
         else:
             censys_list = None
             break
+        if pages == float("inf"):
+            break
     return censys_list
 
 
@@ -98,6 +102,7 @@ def main(domain):
     else:
         print colored(style.BOLD + '\n[-] Please configure respective API Keys for this module.\n' + style.END, 'red')
         return None
+
 
 if __name__ == "__main__":
     try:

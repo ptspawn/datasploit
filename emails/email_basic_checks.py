@@ -19,7 +19,7 @@ class style:
 def basic_checks(email):
     if re.match('[^@]+@[^@]+\.[^@]+', email):
         mailboxlayer_api = vault.get_key('mailboxlayer_api')
-        if vault.get_key('mailboxlayer_api') != None:
+        if vault.get_key('mailboxlayer_api') is not None:
             url = "http://apilayer.net/api/check?access_key=%s&email=%s&smtp=1&format=1" % (mailboxlayer_api, email)
             req = requests.get(url)
             resp = json.loads(req.text)

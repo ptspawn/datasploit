@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import base
 import sys
+import time
+
 import requests
 from termcolor import colored
-import time
 
 ENABLED = True
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-import base
-from Wappalyzer import Wappalyzer, WebPage
 import sys
 import time
+
+from Wappalyzer import Wappalyzer, WebPage
 from termcolor import colored
 
 ENABLED = True

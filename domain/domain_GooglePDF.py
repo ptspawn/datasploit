@@ -7,7 +7,7 @@ import re
 import string
 from termcolor import colored
 
-ENABLED = False
+ENABLED = True
 
 
 class style:
@@ -27,7 +27,11 @@ def googlesearch(query, ext):
         'Connection': 'keep-alive'
     }
     req = urllib2.Request(getrequrl, headers=hdr)
-    response = urllib2.urlopen(req)
+    try:
+        response = urllib2.urlopen(req)
+    except urllib2.HTTPError as e:
+        print("Connection error: " + str(e))
+        return None
     data = response.read()
     data = re.sub('<b>', '', data)
     for e in ('>', '=', '<', '\\', '(', ')', '"', 'http', ':', '//'):

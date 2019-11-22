@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-import base
-import vault
-import requests
 import json
-import sys
 import re
+import sys
+
+import requests
 from termcolor import colored
+
+import vault
 
 ENABLED = True
 
@@ -52,10 +53,10 @@ def google_search(domain):
             url = "https://www.googleapis.com/customsearch/v1?key=%s&cx=%s&q=\"%s\"&start=%s" % (
                 google_cse_key, google_cse_cx, domain, next_index)
             data = json.loads(requests.get(url).content)
-	    if 'error' in data:
-	       return True, all_results
-	    else:
-	        all_results += data['items']
+            if 'error' in data:
+                return True, all_results
+            else:
+                all_results += data['items']
     return True, all_results
 
 
@@ -75,7 +76,8 @@ def output(data, domain=""):
     if not data[0]:
         if type(data) == list and data[1] == "INVALID_API":
             print colored(
-                style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END, 'red')
+                style.BOLD + '\n[-] google_cse_key and google_cse_cx not configured. Skipping paste(s) search.\nPlease refer to http://datasploit.readthedocs.io/en/latest/apiGeneration/.\n' + style.END,
+                'red')
         else:
             print "Error Message: %s" % data[1]['error']['message']
             print "Error Code: %s" % data[1]['error']['code']
@@ -83,9 +85,9 @@ def output(data, domain=""):
     else:
         print "[+] %s results found\n" % len(data[1])
         for x in data[1]:
-	    title = x['title'].encode('ascii', 'ignore').decode('ascii')
-	    snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
-	    link = x['link'].encode('ascii', 'ignore').decode('ascii')
+            title = x['title'].encode('ascii', 'ignore').decode('ascii')
+            snippet = x['snippet'].encode('ascii', 'ignore').decode('ascii')
+            link = x['link'].encode('ascii', 'ignore').decode('ascii')
             print "Title: %s\nURL: %s\nSnippet: %s\n" % (title, colorize(link), colorize(snippet))
 
 

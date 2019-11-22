@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
-import base
-import sys
-import requests
-from bs4 import BeautifulSoup
+import json
 import re
-from termcolor import colored
+import sys
 import time
 import warnings
-import json
+
+import requests
+from bs4 import BeautifulSoup
+from termcolor import colored
 
 warnings.filterwarnings("ignore")
 
@@ -16,15 +16,14 @@ ENABLED = True
 WRITE_TEXT_FILE = True
 MODULE_NAME = "Domain_subdomains"
 
-
 '''
 Author(s): @upgoingstar & @khasmek
 '''
 
+
 class style:
     BOLD = '\033[1m'
     END = '\033[0m'
-
 
 
 def check_and_append_subdomains(subdomain, subdomain_list):
@@ -32,10 +31,12 @@ def check_and_append_subdomains(subdomain, subdomain_list):
         subdomain_list.append(subdomain)
     return subdomain_list
 
+
 def check_and_append_other_domains(other_domain, other_related_domain_list):
     if other_domain not in other_related_domain_list:
         other_related_domain_list.append(other_domain)
     return other_related_domain_list
+
 
 def subdomains(domain, subdomain_list):
     print colored(' [+] Extracting subdomains from DNS Dumpster\n', 'blue')
@@ -90,7 +91,7 @@ def subdomains_from_netcraft(domain, subdomain_list):
                     for y in links_list:
                         dom_name1 = y.split("/")[2].split(".")
                         if (dom_name1[len(dom_name1) - 1] == target_dom_name[1]) and (
-                                    dom_name1[len(dom_name1) - 2] == target_dom_name[0]):
+                                dom_name1[len(dom_name1) - 2] == target_dom_name[0]):
                             subdomain_list = check_and_append_subdomains(y.split("/")[2], subdomain_list)
                     last_item = links_list[len(links_list) - 1].split("/")[2]
                     next_page = 20 * x + 1
@@ -102,7 +103,6 @@ def subdomains_from_netcraft(domain, subdomain_list):
 
 
 def ct_search(domain, subdomain_list, wildcard=True):
-
     '''
     ###################################################################
     Credits:
@@ -126,7 +126,7 @@ def ct_search(domain, subdomain_list, wildcard=True):
     base_url += domain
 
     ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 ' + \
-        'Firefox/40.1'
+         'Firefox/40.1'
     r = requests.get(url=base_url, headers={'User-Agent': ua})
 
     if r.ok:
@@ -146,18 +146,16 @@ def ct_search(domain, subdomain_list, wildcard=True):
                     tmp = {}
                     if wildcard:
                         tmp['domain'] = cells[3].text
-                        #tmp['issuer'] = cells[4].text
+                        # tmp['issuer'] = cells[4].text
                     else:
                         tmp['domain'] = domain,
-                        #tmp['issuer'] = cells[3].text
+                        # tmp['issuer'] = cells[3].text
                     check_and_append_subdomains(tmp['domain'], subdomain_list)
-                    #subdomain_list_tmp.append(tmp)
+                    # subdomain_list_tmp.append(tmp)
         except IndexError:
             print("Error retrieving information.")
 
     return subdomain_list_tmp
-
-
 
 
 '''def find_domains_from_next_page_ct(page_identifier, domain, subdomain_list, other_related_domain_list):
@@ -207,6 +205,7 @@ def subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
         pass
     return subdomain_list, other_related_domain_list'''
 
+
 def subdomains_from_dnstrails(domain, subdomain_list):
     print colored(' [+] Extracting subdomains from DNSTrails\n', 'blue')
     url = 'https://app.securitytrails.com/api/domain/info/' + domain
@@ -223,13 +222,14 @@ def subdomains_from_dnstrails(domain, subdomain_list):
             subdomains_new = data['result']['subdomains']
             for a in range(0, len(subdomains_new)):
                 subdomains_new[a] = subdomains_new[a] + '.' + domain
-                #print subdomains_new[a]
+                # print subdomains_new[a]
                 subdomain_list = check_and_append_subdomains(subdomains_new[a], subdomain_list)
         else:
             print colored(' [!] {}\n'.format(data['error']), 'yellow')
     else:
         print colored(' [+] DNSTrails API rate limit exceeded\n', 'yellow')
     return subdomain_list
+
 
 def banner():
     print colored(style.BOLD + '---> Finding subdomains, will be back soon with list. \n' + style.END, 'blue')
@@ -241,7 +241,7 @@ def main(domain):
     other_related_domain_list = []
     subdomain_list = subdomains(domain, subdomain_list)
     subdomain_list = subdomains_from_netcraft(domain, subdomain_list)
-    #subdomain_list, other_related_domain_list = subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
+    # subdomain_list, other_related_domain_list = subdomains_from_google_ct(domain, subdomain_list, other_related_domain_list)
     subdomains_from_ct = ct_search(domain, subdomain_list)
     subdomain_list = subdomains_from_dnstrails(domain, subdomain_list)
     # not printing list of 'other_related_domain_list' anywhere. This is done for later changes.
@@ -251,25 +251,25 @@ def main(domain):
 def output(data, domain=""):
     print colored("List of subdomains found\n", 'green')
     for sub in data:
-	if not re.match("\d{4}-\d{2}-\d{2}", sub):
+        if not re.match("\d{4}-\d{2}-\d{2}", sub):
             print sub
 
 
 def output_text(data):
-	ret_out = []
-	for sub in data:
-        	if not re.match("\d{4}-\d{2}-\d{2}", sub):
-        		ret_out.append(sub)
-	return "\n".join(ret_out)
+    ret_out = []
+    for sub in data:
+        if not re.match("\d{4}-\d{2}-\d{2}", sub):
+            ret_out.append(sub)
+    return "\n".join(ret_out)
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 0:
-        #try:
+        # try:
         domain = sys.argv[1]
         banner()
         result = main(domain)
         output(result, domain)
-        #except Exception as e:
+        # except Exception as e:
     else:
         print "Please provide a domain name as argument"
