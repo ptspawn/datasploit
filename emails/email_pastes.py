@@ -53,9 +53,9 @@ def google_search(email):
                 google_cse_key, google_cse_cx, email, next_index)
             data = json.loads(requests.get(url).content)
         if 'error' in data:
-                return True, all_results
-            else:
-                all_results += data['items']
+            return True, all_results
+        else:
+            all_results += data['items']
     return True, all_results
 
 
@@ -91,5 +91,5 @@ if __name__ == "__main__":
         banner()
         result = main(email)
         output(result, email)
-    except e as Exception:
+    except Exception as e:
         print e

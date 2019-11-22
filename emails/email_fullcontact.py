@@ -61,8 +61,6 @@ def _handle_dict(data):
 
     
 def _handle_list(data):
-    if len(data) == 0:
-        return
     for elem in data:
         _select_handler(elem)
     
@@ -78,8 +76,9 @@ def output(data, email=""):
             'red'))
     else:
         status = data.get("status")
-        if status is None or status in[200, 201, 202]:
+        if status is None or status in [200, 201, 202]:
             _select_handler(data)
+            # TODO: print the output like the former implementation
             # 
             # 
             # if data.get("contactInfo", "") != "":
